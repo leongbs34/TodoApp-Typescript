@@ -1,26 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import styles from './App.module.css';
+import InputField from './components/InputField';
+import Todo from './components/Todo';
+import TodoModel from './components/model/Todo';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+	const [todos, setTodos] = useState<TodoModel[]>([]);
+
+	const deleteHandler = (id: number) => {
+		setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+	};
+
+	const doneHandler = (id: number) => {
+		setTodos(prevTodos =>
+			prevTodos.map(todo => {
+				if (todo.id === id) {
+					return { ...todo, isDone: !todo.isDone };
+				} else return todo;
+			})
+		);
+	};
+
+	let activeTodos = todos.filter(todo => todo.isDone === false);
+	let inactiveTodos = todos.filter(todo => todo.isDone === true);
+
+	return (
+		<div className={styles.main}>
+			<span className={styles.heading}>Todo App</span>
+			<InputField setTodos={setTodos} />
+			{activeTodos.length !== 0 && (
+				<div className={styles.todos}>
+					<span className={styles.todos__category}>Active tasks</span>
+					{activeTodos.map(todo => (
+						<Todo
+							key={todo.id}
+							todo={todo}
+							deleteHandler={deleteHandler}
+							doneHandler={doneHandler}
+						/>
+					))}
+				</div>
+			)}
+			{inactiveTodos.length !== 0 && (
+				<div className={`${styles.todos} ${styles['todos--completed']}`}>
+					<span
+						className={`${styles.todos__category} ${styles['todos__category--completed']}`}
+					>
+						Completed tasks
+					</span>
+					{inactiveTodos.map(todo => (
+						<Todo
+							key={todo.id}
+							todo={todo}
+							deleteHandler={deleteHandler}
+							doneHandler={doneHandler}
+						/>
+					))}
+				</div>
+			)}
+		</div>
+	);
+};
 
 export default App;

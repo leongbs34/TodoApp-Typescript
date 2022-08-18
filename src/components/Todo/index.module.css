@@ -1,0 +1,27 @@
+.todo {
+	display: flex;
+	border: 2px solid rgb(81, 78, 78);
+	width: 100%;
+	border-radius: 30px;
+	height: 70px;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	margin-top: 25px;
+	background-image: url('https://img.freepik.com/free-vector/yellow-hexagonal-honeycomb-mesh-pattern-with-text-space_1017-26292.jpg?w=2000&t=st=1660791707~exp=1660792307~hmac=584ec2348b647c9b229ebf6557bd83583b936aa828f94686017ebd254683b113');
+	background-size: cover;
+}
+
+.todo .todo__text {
+	font-size: 30px;
+}
+
+.todo--done {
+	text-decoration: line-through;
+}
+
+@media (min-width: 768px) {
+	.todo {
+		width: 45%;
+	}
+}
